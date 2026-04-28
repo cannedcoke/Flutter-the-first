@@ -16,7 +16,6 @@ class _TareasState extends State<Tareas> {
   final TextEditingController _controller = TextEditingController();
 
   // Index to track which task is being edited
-  int updateIndex = -1;
 
   @override
   void initState() {
@@ -41,19 +40,11 @@ class _TareasState extends State<Tareas> {
   // Function to add a new task to the list
   addList(String task) {
     setState(() {
-      todoList.add(task);
-      _controller.clear();
-    });
-    saveTasks();
-  }
-
-  // Function to update an existing task
-  updateListItem(String task, int index) {
-    setState(() {
-      todoList[index] = task;
-
-      // Reset update index
-      updateIndex = -1;
+      if (task == '') {
+        showAlertDialog(context);
+      } else {
+        todoList.add(task);
+      }
       _controller.clear();
     });
     saveTasks();
@@ -115,31 +106,13 @@ class _TareasState extends State<Tareas> {
                               ),
                             ),
                           ),
-
-                          // Edit button
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _controller.clear();
-                                _controller.text = todoList[index];
-                                updateIndex = index;
-                              });
-                            },
-                            icon: Icon(
-                              Icons.edit,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-
                           // Delete button
                           IconButton(
                             onPressed: () {
                               deleteItem(index);
                             },
                             icon: Icon(
-                              Icons.delete,
+                              Icons.done,
                               size: 30,
                               color: Colors.white,
                             ),
@@ -177,21 +150,12 @@ class _TareasState extends State<Tareas> {
                   ),
                   SizedBox(width: 5),
 
-                  // Floating action button for adding/updating tasks
+                  // Floating action button for adding
                   FloatingActionButton(
-                    // backgroundColor: Colors.green,
-                    // foregroundColor: Colors.white,
                     onPressed: () {
-                      updateIndex != -1
-                          ? updateListItem(
-                              _controller.text,
-                              updateIndex,
-                            ) // Update task if editing
-                          : addList(_controller.text); // Add new task
+                      addList(_controller.text);
                     },
-                    child: Icon(
-                      updateIndex != -1 ? Icons.edit : Icons.add,
-                    ), // Icon changes based on action
+                    child: Icon(Icons.add),
                   ),
                 ],
               ),
@@ -201,4 +165,31 @@ class _TareasState extends State<Tareas> {
       ),
     );
   }
+}
+
+
+showAlertDialog(BuildContext context) {
+
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.pop(context, false);},
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Error"),
+    content: Text("empty message."),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

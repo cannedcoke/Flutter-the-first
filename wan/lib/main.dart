@@ -13,8 +13,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       backgroundColor: const Color.fromARGB(255, 3, 3, 0),
       body: Center(
+        
         child: SizedBox(
           height: 700,
           width: 400,
@@ -25,6 +27,7 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               spacing: 100,
               children: [
+
                 Text(
                   'Welcome Back !!',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
